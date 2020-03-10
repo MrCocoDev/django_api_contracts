@@ -25,6 +25,7 @@ def _apply_contract(request_contract, view_function):
             return handle_api_form_errors(contract)
 
         request.validated_form = contract
+        request.validated_data = contract.cleaned_data
 
         return view_function(request, *args, **kwargs)
 
