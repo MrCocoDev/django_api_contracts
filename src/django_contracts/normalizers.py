@@ -6,19 +6,25 @@ from django import http, forms
 
 class ErrorForm(forms.Form):
 
+    reason = forms.CharField()
+
     def clean(self):
         raise forms.ValidationError(
-            message=(
-                "Invalid POST data. "
-                "The supported MIME types for this endpoint are: "
-                "[multipart/form-data, application/json] "
-            ),
-            code="invalid"
+            [
+                forms.ValidationError(
+                    message=(
+                        "Invalid POST data. "
+                        "The supported MIME types for this endpoint are: "
+                        "[multipart/form-data, application/json]"
+                    ),
+                    code="invalid"
+                ),
+                forms.ValidationError(
+                    message=self.data['reason'],
+                    code="invalid"
+                ),
+            ],
         )
-
-
-_error = ErrorForm()
-_error.is_valid()
 
 
 def normalize_view_data(func, request_type):
@@ -27,8 +33,10 @@ def normalize_view_data(func, request_type):
         try:
             request.data = normalize_request_data(request, request_type)
         except json.JSONDecodeError as e:
+            errors = ErrorForm({'reason': str(e)})
+            errors.is_valid()
             return http.HttpResponseBadRequest(
-                content=json.dumps(_error.errors),
+                content=json.dumps(errors.errors),
                 content_type="application/json"
             )
 

@@ -1,4 +1,6 @@
-from project_apps.api_tools.requests import log
+from logging import getLogger
+
+log = getLogger(__name__)
 
 
 def apply_response_contract(response_contract, response_data, view):

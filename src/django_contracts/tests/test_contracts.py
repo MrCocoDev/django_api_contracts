@@ -187,3 +187,34 @@ def test_my_advanced_view_returns_errors_custom():
     }
 
     assert response.status_code == 409
+
+
+@apply(MyTestForm, for_method='POST')
+def basic_view(request):
+    import pdb
+    pdb.set_trace()
+    return http.HttpResponse(
+        content=json.dumps(request.validated_data),
+        status=200,
+    )
+
+
+def test_bad_encoding_error():
+    request = RequestFactory().post(
+        path='/test/path/',
+        body='some other formatting',
+        encoding='application/json',
+    )
+
+    response = my_advanced_view(request)
+    response_dict = json.loads(response.content)
+
+    assert response_dict == {
+        '__all__': [
+            (
+                'Invalid POST data. The supported MIME types for this endpoint are: '
+                '[multipart/form-data, application/json]'
+            ),
+            'Expecting value: line 1 column 1 (char 0)',
+        ],
+    }
