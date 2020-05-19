@@ -1,10 +1,7 @@
-from inspect import isfunction
 
 
-def get_contract(request, request_contract):
-    if isfunction(request_contract):
-        request_contract_actual = request_contract(request.user)
+def get_contract(request, request_contract, pass_in_user=False):
+    if pass_in_user:
+        return request_contract(request.data, request.user)
     else:
-        request_contract_actual = request_contract
-
-    return request_contract_actual(request.data)
+        return request_contract(request.data)

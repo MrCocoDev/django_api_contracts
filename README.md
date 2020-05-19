@@ -24,14 +24,16 @@ contract. This is helpful if you need a form to be specific to a user.
 from django import forms
 from django_contracts.contracts import apply
 
-def create_form_for_user(user):
+def create_form_for_user(user, data):
     class MyUserForm(forms.Form):
         # ... 
+        if user_can_do_thing:
+            my_field = ...
     
-    return MyUserForm
+    return MyUserForm(data)
     
 
-@apply(create_form_for_user, for_method='POST')
+@apply(create_form_for_user, for_method='POST', pass_in_user=True)
 def my_view(request):
     # ... 
 ```
@@ -46,7 +48,9 @@ class MyUserForm(forms.Form):
         super(*args, **kwargs)
         self.user = user
 
-@apply(lambda user: lamba data: MyUserForm(user, data))
+@apply(MyUserForm, for_method='POST', pass_in_user=True)
 def my_view(request)
     # ...
 ```
+
+Using forms that take a `User` can be useful for filtering choice options.
