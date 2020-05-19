@@ -1,0 +1,4 @@
+graft src
+include README.md
+include pytest.ini
+recursive-include src *.py
