@@ -81,3 +81,5 @@ def test_bad_encoding_error():
             'Expecting value: line 1 column 1 (char 0)',
         ],
     }
+
+    assert response.status_code == 400
