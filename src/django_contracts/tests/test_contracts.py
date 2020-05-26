@@ -3,7 +3,7 @@ import json
 from django import http, forms
 from django.test.client import RequestFactory
 
-from django_contracts.contracts import apply
+from django_contracts.request import apply_request
 
 
 class MyTestForm(forms.Form):
@@ -26,7 +26,7 @@ def test_my_test_view_works():
         }
     )
 
-    response = apply(MyTestForm, for_method='POST')(basic_view)(request)
+    response = apply_request(MyTestForm, for_method='POST')(basic_view)(request)
 
     response_dict = json.loads(response.content)
 
@@ -46,7 +46,7 @@ def test_my_test_view_returns_errors():
         }
     )
 
-    response = apply(MyTestForm, for_method='POST')(basic_view)(request)
+    response = apply_request(MyTestForm, for_method='POST')(basic_view)(request)
 
     response_dict = json.loads(response.content)
 
@@ -69,7 +69,7 @@ def test_bad_encoding_error():
         encoding='application/json',
     )
 
-    response = apply(MyTestForm, for_method='POST')(basic_view)(request)
+    response = apply_request(MyTestForm, for_method='POST')(basic_view)(request)
     response_dict = json.loads(response.content)
 
     assert response_dict == {

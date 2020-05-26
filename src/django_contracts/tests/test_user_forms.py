@@ -3,7 +3,7 @@ import json
 from django import http, forms
 from django.test.client import RequestFactory
 
-from django_contracts.contracts import apply
+from django_contracts.request import apply_request
 from unittest import mock
 
 
@@ -17,7 +17,7 @@ class MyUserForm(forms.Form):
             self.fields['hidden'] = forms.CharField()
 
 
-@apply(MyUserForm, for_method='POST', pass_in_user=True, )
+@apply_request(MyUserForm, for_method='POST', pass_in_user=True, )
 def basic_view(request):
     return http.HttpResponse(
         content=json.dumps(request.validated_data),
