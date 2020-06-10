@@ -8,7 +8,7 @@ def apply_response(contract):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
         wrapper.response_contract = contract
         return wrapper
     return decorator

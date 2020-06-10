@@ -12,7 +12,8 @@ def request_contract(request_contracts, response_contract, pass_in_user=False):
         def wrapper(request, *args, **kwargs):
             method = request.method
             request_contract = request_contracts[method]
-            new_func = apply_response(contract=response_contract)(func=func)
+            new_func = func
+            new_func = apply_response(contract=response_contract)(func=new_func)
             new_func = apply_request(
                 request_contract=request_contract,
                 for_method=method,
