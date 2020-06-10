@@ -23,7 +23,7 @@ def request_contract(request_contracts, response_contract, pass_in_user=False):
                     pass_in_user=pass_in_user
                 )(func=new_func)
 
-            return new_func
+            return new_func(request, *args, **kwargs)
 
         return wrapper
 
