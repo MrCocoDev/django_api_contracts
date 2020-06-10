@@ -18,7 +18,7 @@ URL = 'https://github.com/MrSage/django_contracts'
 EMAIL = 'clln.sage@yahoo.com'
 AUTHOR = 'Collin Sage'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.3.0'
+VERSION = '0.3.1'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
@@ -104,7 +104,7 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
+    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"], where='./src'),
     package_dir={'': 'src'},
     # If your package is a single module, use this instead of 'packages':
     # py_modules=['mypackage'],
