@@ -12,6 +12,12 @@ def apply_request(request_contract, for_method='POST', pass_in_user=False):
     def decorator(func):
         wrapper = wraps(func)(_apply_request_contract(request_contract, func, pass_in_user))
         wrapper.request_contract = request_contract
+
+        # Preserve glommed values
+        for attribute in vars(func):
+            if not getattr(wrapper, attribute):
+                setattr(wrapper, attribute, getattr(func, attribute))
+
         return normalize_view_data(wrapper, for_method)
 
     return decorator

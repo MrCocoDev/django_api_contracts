@@ -22,7 +22,7 @@ contract. This is helpful if you need a form to be specific to a user.
 
 ```python
 from django import forms
-from django_contracts.contracts import apply
+from django_contracts.contracts import request_contract
 
 def create_form_for_user(user, data):
     class MyUserForm(forms.Form):
@@ -33,7 +33,7 @@ def create_form_for_user(user, data):
     return MyUserForm(data)
     
 
-@apply(create_form_for_user, for_method='POST', pass_in_user=True)
+@request_contract({'POST': create_form_for_user}, pass_in_user=True)
 def my_view(request):
     # ... 
 ```

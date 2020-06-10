@@ -10,6 +10,12 @@ def apply_response(contract):
         def wrapper(*args, **kwargs):
             return func(*args, **kwargs)
         wrapper.response_contract = contract
+
+        # Preserve glommed values
+        for attribute in vars(func):
+            if not getattr(wrapper, attribute):
+                setattr(wrapper, attribute, getattr(func, attribute))
+
         return wrapper
     return decorator
 
