@@ -3,7 +3,7 @@ import json
 from django import http, forms
 from django.test.client import RequestFactory
 
-from django_contracts.request import apply_request
+from django_contracts.contracts import apply_contract
 
 
 class MyAdvancedForm(forms.Form):
@@ -30,7 +30,7 @@ class MyAdvancedForm(forms.Form):
         ]
 
 
-@apply_request(MyAdvancedForm, for_method='POST', pass_in_user=False)
+@apply_contract({'POST': MyAdvancedForm}, None, pass_in_user=False)
 def my_advanced_view(request):
     return http.HttpResponse(
         content=json.dumps(request.validated_data),

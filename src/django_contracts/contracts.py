@@ -1,30 +1,78 @@
 import logging
 from functools import wraps
-from .request import apply_request
-from .response import apply_response
+from .errors import handle_api_form_errors
+from .normalizers import normalize_view_data
 
 log = logging.getLogger(__name__)
 
 
-def request_contract(request_contracts, response_contract, pass_in_user=False):
+def apply_contract(request_contracts=None, response_contracts=None, pass_in_user=False):
     def decorator(func):
         @wraps(func)
         def wrapper(request, *args, **kwargs):
-            new_func = func
-            if response_contract:
-                new_func = apply_response(contract=response_contract)(func=new_func)
+            errors = normalize_view_data(request)
+            if errors:
+                return errors
+
+            if response_contracts:
+
+                method = request.method
+                contract_for_method = response_contracts[method]
+
+                if pass_in_user:
+                    contract = contract_for_method(request.data, getattr(request, 'user', None))
+                else:
+                    contract = contract_for_method(request.data)
+
+                if contract.errors:
+                    log.info(msg=f"Request has errors: {contract.errors}")
+                    return handle_api_form_errors(contract)
+
+                try:
+                    request.contracts['response'] = response_contracts
+                except (AttributeError, KeyError):
+                    request.contracts = {
+                        'response': response_contracts
+                    }
 
             if request_contracts:
+
                 method = request.method
-                contract = request_contracts[method]
-                new_func = apply_request(
-                    request_contract=contract,
-                    for_method=method,
-                    pass_in_user=pass_in_user
-                )(func=new_func)
+                contract_for_method = request_contracts[method]
 
-            return new_func(request, *args, **kwargs)
+                if pass_in_user:
+                    contract = contract_for_method(request.data, getattr(request, 'user', None))
+                else:
+                    contract = contract_for_method(request.data)
 
+                if contract.errors:
+                    log.info(msg=f"Request has errors: {contract.errors}")
+                    return handle_api_form_errors(contract)
+
+                try:
+                    request.contracts['request'] = contract
+                except (AttributeError, KeyError):
+                    request.contracts = {
+                        'request': contract,
+                    }
+
+                request.validated_data = contract.cleaned_data
+
+            return func(request, *args, **kwargs)
+
+        try:
+            wrapper.contracts['response'] = response_contracts
+        except (AttributeError, KeyError):
+            wrapper.contracts = {
+                'response': response_contracts
+            }
+
+        try:
+            wrapper.contracts['request'] = request_contracts
+        except (AttributeError, KeyError):
+            wrapper.contracts = {
+                'request': request_contracts
+            }
         return wrapper
 
     return decorator

@@ -2,8 +2,7 @@
 from django import forms, http
 from django_contracts.discovery.primitives import as_json, view_to_json
 
-from django_contracts.request import apply_request
-from django_contracts.response import apply_response
+from django_contracts.contracts import apply_contract
 
 
 class MyForm(forms.Form):
@@ -11,11 +10,14 @@ class MyForm(forms.Form):
     num = forms.IntegerField(min_value=-99, max_value=100, required=True, initial=100, )
 
 
-@apply_response(MyForm)
-@apply_request(MyForm, for_method='POST')
+@apply_contract(
+    request_contracts={'GET': MyForm, 'POST': MyForm},
+    response_contracts={'GET': MyForm, 'POST': MyForm},
+    pass_in_user=True,
+)
 def basic_view(request):
     return http.HttpResponse(
-        content='Hello, world!',
+        content='Hello World',
         status=200,
     )
 
@@ -42,7 +44,7 @@ def test_json_serializing_form_definition():
 
 
 def test_get_discovery_documentation_from_view_request_contract():
-    json_repr = as_json(basic_view.request_contract())
+    json_repr = as_json(basic_view.contracts['request']['POST']())
 
     assert json_repr == {
         'char': {
@@ -67,35 +69,71 @@ def test_get_discovery_documentation_from_view():
 
     assert json_repr == {
         'request': {
-            'char': {
-                'default': None,
-                'required': True,
-                'type': 'text',
-                'maxlength': '99',
-                'minlength': '10',
+            'GET': {
+                'char': {
+                    'default': None,
+                    'required': True,
+                    'type': 'text',
+                    'maxlength': '99',
+                    'minlength': '10',
+                },
+                'num': {
+                    'default': 100,
+                    'required': True,
+                    'type': 'number',
+                    'min': -99,
+                    'max': 100,
+                },
             },
-            'num': {
-                'default': 100,
-                'required': True,
-                'type': 'number',
-                'min': -99,
-                'max': 100,
+            'POST': {
+                'char': {
+                    'default': None,
+                    'required': True,
+                    'type': 'text',
+                    'maxlength': '99',
+                    'minlength': '10',
+                },
+                'num': {
+                    'default': 100,
+                    'required': True,
+                    'type': 'number',
+                    'min': -99,
+                    'max': 100,
+                },
             },
         },
         'response': {
-            'char': {
-                'default': None,
-                'required': True,
-                'type': 'text',
-                'maxlength': '99',
-                'minlength': '10',
+            'GET': {
+                'char': {
+                    'default': None,
+                    'required': True,
+                    'type': 'text',
+                    'maxlength': '99',
+                    'minlength': '10',
+                },
+                'num': {
+                    'default': 100,
+                    'required': True,
+                    'type': 'number',
+                    'min': -99,
+                    'max': 100,
+                },
             },
-            'num': {
-                'default': 100,
-                'required': True,
-                'type': 'number',
-                'min': -99,
-                'max': 100,
+            'POST': {
+                'char': {
+                    'default': None,
+                    'required': True,
+                    'type': 'text',
+                    'maxlength': '99',
+                    'minlength': '10',
+                },
+                'num': {
+                    'default': 100,
+                    'required': True,
+                    'type': 'number',
+                    'min': -99,
+                    'max': 100,
+                },
             },
-        },
+        }
     }

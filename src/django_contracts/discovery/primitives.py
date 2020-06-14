@@ -17,12 +17,12 @@ def view_to_json(view):
     discovery_info = {}
 
     try:
-        discovery_info['request'] = as_json(view.request_contract())
+        discovery_info['request'] = {key: as_json(value()) for key, value in view.contracts['request'].items()}
     except AttributeError:
         pass
 
     try:
-        discovery_info['response'] = as_json(view.response_contract())
+        discovery_info['response'] = {key: as_json(value()) for key, value in view.contracts['response'].items()}
     except AttributeError:
         pass
 

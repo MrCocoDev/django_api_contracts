@@ -6,10 +6,10 @@ to consider something like Django REST Framework.
 
 ## Basic Usage
 ```python
-from django_contracts.contracts import apply
+from django_contracts.contracts import apply_contract
 
 
-@apply(MyFormClass, for_method='POST')
+@apply_contract(request_contracts={'POST': MyRequestForm}, response_contracts={'POST': MyResponseForm})
 def my_view(request):
     # If you get here then the request matched your contract
     data = request.validated_data
@@ -33,7 +33,7 @@ def create_form_for_user(user, data):
     return MyUserForm(data)
     
 
-@request_contract({'POST': create_form_for_user}, pass_in_user=True)
+@apply_contract(request_contracts={'POST': create_form_for_user}, pass_in_user=True)
 def my_view(request):
     # ... 
 ```
@@ -48,7 +48,7 @@ class MyUserForm(forms.Form):
         super(*args, **kwargs)
         self.user = user
 
-@apply(MyUserForm, for_method='POST', pass_in_user=True)
+@apply_contract(request_contracts={'POST': create_form_for_user}, pass_in_user=True)
 def my_view(request)
     # ...
 ```
