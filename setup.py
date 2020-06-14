@@ -14,11 +14,11 @@ from setuptools import find_packages, setup, Command
 # Package meta-data.
 NAME = 'django_contracts'
 DESCRIPTION = 'A lightweight API validation library built on top of Django forms.'
-URL = 'https://github.com/MrSage/django_contracts'
+URL = 'https://github.com/MrSage/django_api_contracts'
 EMAIL = 'clln.sage@yahoo.com'
 AUTHOR = 'Collin Sage'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.4.1'
+VERSION = '0.4.2'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
