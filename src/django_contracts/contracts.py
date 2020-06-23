@@ -19,20 +19,11 @@ def apply_contract(request_contracts=None, response_contracts=None, pass_in_user
                 method = request.method
                 contract_for_method = response_contracts[method]
 
-                if pass_in_user:
-                    contract = contract_for_method(request.data, getattr(request, 'user', None))
-                else:
-                    contract = contract_for_method(request.data)
-
-                if contract.errors:
-                    log.info(msg=f"Request has errors: {contract.errors}")
-                    return handle_api_form_errors(contract)
-
                 try:
-                    request.contracts['response'] = response_contracts
+                    request.contracts['response'] = contract_for_method
                 except (AttributeError, KeyError):
                     request.contracts = {
-                        'response': response_contracts
+                        'response': contract_for_method
                     }
 
             if request_contracts:
