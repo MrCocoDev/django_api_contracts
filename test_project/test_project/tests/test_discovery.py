@@ -142,4 +142,78 @@ def test_get_discovery_documentation_from_view():
 
 def test_get_discovery_document():
     discovery_document = get_application_discovery_document()
-    assert discovery_document == {}
+    assert discovery_document == [
+        {
+            'url': 'test/view/1/$',
+            'specifications': {
+                'request': {
+                    'GET': {
+                        'char': {
+                            'default': None,
+                            'required': True,
+                            'type': 'text',
+                            'maxlength': '99',
+                            'minlength': '10'
+                        },
+                        'num': {
+                            'default': 100,
+                            'required': True,
+                            'type': 'number',
+                            'min': -99,
+                            'max': 100
+                        }
+                    },
+                    'POST': {
+                        'char': {
+                            'default': None,
+                            'required': True,
+                            'type': 'text',
+                            'maxlength': '99',
+                            'minlength': '10'
+                        },
+                        'num': {
+                            'default': 100,
+                            'required': True,
+                            'type': 'number',
+                            'min': -99,
+                            'max': 100
+                        }
+                    }
+                },
+                'response': {
+                    'GET': {
+                        'char': {
+                            'default': None,
+                            'required': True,
+                            'type': 'text',
+                            'maxlength': '99',
+                            'minlength': '10'
+                        },
+                        'num': {
+                            'default': 100,
+                            'required': True,
+                            'type': 'number',
+                            'min': -99,
+                            'max': 100
+                        }
+                    },
+                    'POST': {
+                        'char': {
+                            'default': None,
+                            'required': True,
+                            'type': 'text',
+                            'maxlength': '99',
+                            'minlength': '10'
+                        },
+                        'num': {
+                            'default': 100,
+                            'required': True,
+                            'type': 'number',
+                            'min': -99,
+                            'max': 100
+                        }
+                    }
+                }
+            }
+        },
+    ]

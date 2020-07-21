@@ -9,10 +9,13 @@ def get_application_discovery_document():
         for vf, url_info in get_resolver().reverse_dict.items() if callable(vf)
     )
 
-    make_into_dictionary = {
-        x[1][1]: x[0]
+    make_into_list_of_dictionaries = [
+        {
+            'url': x[1][1],
+            'specifications': x[0],
+        }
         for x in serializing_iterator
         if x[0]
-    }
+    ]
 
-    return make_into_dictionary
+    return make_into_list_of_dictionaries

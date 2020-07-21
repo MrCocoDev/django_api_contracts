@@ -21,5 +21,5 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/view/1/', views)
+    path('test/view/1/', views.basic_view)
 ]
