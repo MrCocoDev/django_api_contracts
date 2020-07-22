@@ -12,7 +12,7 @@ def get_application_discovery_document():
     make_into_list_of_dictionaries = [
         {
             'url': x[1][1],
-            'specifications': x[0],
+            **x[0],
         }
         for x in serializing_iterator
         if x[0]

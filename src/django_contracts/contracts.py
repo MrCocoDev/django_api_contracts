@@ -67,3 +67,30 @@ def apply_contract(request_contracts=None, response_contracts=None, pass_in_user
         return wrapper
 
     return decorator
+
+
+def description(public_docstring=None, use_view_docstring=False):
+    def decorator(func):
+        docstring = func.__doc__ if use_view_docstring else public_docstring
+        try:
+            func.contracts['description'] = docstring
+        except (AttributeError, KeyError):
+            func.contracts = {
+                'description': docstring
+            }
+        return func
+
+    return decorator
+
+
+def resource_id(resource_id):
+    def decorator(func):
+        try:
+            func.contracts['resource_id'] = resource_id
+        except (AttributeError, KeyError):
+            func.contracts = {
+                'resource_id': resource_id
+            }
+        return func
+
+    return decorator
