@@ -17,8 +17,8 @@ DESCRIPTION = 'A lightweight API validation library built on top of Django forms
 URL = 'https://github.com/MrSage/django_api_contracts'
 EMAIL = 'clln.sage@yahoo.com'
 AUTHOR = 'Collin Sage'
-REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.4.3'
+REQUIRES_PYTHON = '>=3.8.0'
+VERSION = '0.4.4'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
