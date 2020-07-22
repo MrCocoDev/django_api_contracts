@@ -14,7 +14,6 @@ class MyForm(forms.Form):
 @description(
     """
     This is a basic test view that returns a 200 Hello, World response.
-
 """
 )
 @apply_contract(
@@ -223,9 +222,9 @@ def test_get_discovery_document():
                             'type': 'number',
                             'min': -99,
                             'max': 100
-                        }
-                    }
-                }
-            }
+                        },
+                    },
+                },
+            },
         },
     ]
