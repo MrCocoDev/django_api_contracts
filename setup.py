@@ -18,7 +18,7 @@ URL = 'https://github.com/MrSage/django_api_contracts'
 EMAIL = 'clln.sage@yahoo.com'
 AUTHOR = 'Collin Sage'
 REQUIRES_PYTHON = '>=3.8.0'
-VERSION = '0.4.4'
+VERSION = '0.4.5'
 
 # What packages are required for this module to be executed?
 REQUIRED = [

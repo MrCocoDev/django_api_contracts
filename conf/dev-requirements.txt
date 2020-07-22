@@ -1,3 +1,5 @@
 -e .
 django
 pytest
+pytest-django
+twine
